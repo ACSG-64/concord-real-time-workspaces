@@ -23,5 +23,5 @@ orm.sync()
 		const mode = (process.env.NODE_ENV).toLowerCase() === 'production' ? 'PRODUCTION' : 'DEVELOPMENT';
 		console.warn(`Project running in ${mode} mode`);
 		const PORT = process.env.PORT || 8080;
-		server.listen(PORT, () => console.log(`Server listening in port ${PORT}`));
+		server.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 	});	
