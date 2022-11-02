@@ -5,6 +5,8 @@ const path = require('path');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
+const { authEndpoint } = require('./api/index');
+
 /* Configure the server */
 const app = express();
 const server = createServer(app);
@@ -17,6 +19,9 @@ app.use(helmet()); // set HTTP security headers
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
+
+/* Set the API endpoints */
+app.use('/api/auth', authEndpoint);
 
 /* Server events */
 server.on('listening', () => {
