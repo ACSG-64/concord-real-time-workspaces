@@ -1,11 +1,9 @@
+const args = require('./utils/args');
 const express = require('express');
 const { createServer } = require('http');
 const path = require('path');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
-const args = require('./utils/args');
 
 /* Configure the server */
 const app = express();
@@ -16,8 +14,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 /* Configure global middlewares */
 app.use(helmet()); // set HTTP security headers
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 app.use(cookieParser());
 
 /* Server events */
