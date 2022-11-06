@@ -73,28 +73,42 @@ If you have a conceptual suggestion, propose it in the discussion section here: 
 - **Explain why this enhancement would be useful** to most Concord real time work spaces users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
 
 
-## Styleguides
-Follow the style guide defined in the .eslintrc.json files. If you use Visual Studio Code, you may be interested in using the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint&ssr=false#overview) extension.
+## Coding style and convention guide
+Follow the style conventions defined in the .eslintrc.json files. If you use Visual Studio Code, you may be interested in using the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint&ssr=false#overview) extension.
 
 Additionally, consider the following:
-* Variable naming: use descriptive names and the convention is camel case.
-* Code blocks: Follow the Kernighan and Ritchie style for braces.
-* Comments:
-    * To describe functions or methods, follow the JSDoc convention. 
-    * Separate sections of code like this: 
+*   Naming conventions: Names should be descriptive of what they represent.
+    *   For variable and function naming: use camel case (`camelCase`).
+    *   For class naming: use Pascal case (`PascalCase`).
+*   Code blocks: follow the Kernighan and Ritchie style for braces.
+*   Comments:
+    *   To describe functions or methods, follow the JSDoc convention. 
+    *   Separate sections of code like this: 
     ```javascript
     /* A section */
     const exampleVar = 'An example';
-    function demo() {...}
+    function demo() {
+        // an implementation
+    }
     
     /* Another section */
     ...
     ```
-    * Describe sections of code with multiline comments.
-    * Describe parts of code with single-line comments.
+    *   Describe sections of code with multiline comments.
+    *   Describe parts of code with single-line comments.
+
+**Other specifications**: 
+*   The use of `var` is discouraged, prefer using `let` and `const` when is appropriated.
+*   The use of modern JavaScript (ES6+) syntax is highly encouraged, that includes, among other things, the use of classes, anonymous functions, destructuring operator, etc.
+*   Follow secure programming practices.
+
+**NOTE: More specific details on front-end and back-end development code considerations can be found in their respective directories.**
 
 ### Commit Messages
 Commit messages must be clear about the changes contributed. If you modified something existing, comment that as well. If the commit is related to an issue, also reference it with the issue number.
+
+## Info about branches:
+The 'development' and 'main' branches are protected and you cannot upload changes directly using Push, you need to create a temporary branch and open a pull request to the specified branch.
 
 ## _Attribution_
 _This guide is based on the **contributing-gen**. [Make your own](https://github.com/bttger/contributing-gen)!_
