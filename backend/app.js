@@ -1,3 +1,4 @@
+require('dotenv').config(); // allows to read the variables defined in the .env file
 const args = require('./utils/args');
 const express = require('express');
 const { createServer } = require('http');
