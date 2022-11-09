@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon server.js --mode=development",
-    "start": "pm2 app.js",
+    "start": "pm2 app.js --mode=production",
     "test": "mocha --mode=testing --exit"
   },
   "dependencies": {
