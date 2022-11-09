@@ -1,7 +1,6 @@
 const { body, validationResult } = require('express-validator');
 const argon2 = require('argon2');
 const { User } = require('../../models/index');
-
 const { removeExtraSpaces } = require('../../utils/custom-sanitizers');
 
 async function controller(req, res) {
@@ -10,23 +9,20 @@ async function controller(req, res) {
 	if (!errors.isEmpty()) {
 		return res.status(400).json({
 			// Only send the error msg and the param where the error was found to avoid expose more info
-			errors: errors.array()
-				.map(({ msg, param }) => { return { msg, param }; })
+			errors: errors.array().map(({ msg, param }) => { return { msg, param }; })
 		});
 	}
 
 	// Get the needed fields from the body of the request
-	const { first_name, last_name, user_name, email, password } = req.body;
+	const { first_name, last_name, user_name, email, password: raw_pswd } = req.body;
 
 	try {
 		// Securely hash the password using the Argon2id algorithm
-		const securePassword = await argon2.hash(password);
+		const password = await argon2.hash(raw_pswd);
 		// Store the new user into the DB
 		await User.create({
-			first_name, last_name,
-			user_name,
-			email,
-			password: securePassword,
+			first_name, last_name, user_name,
+			email, password,
 		});
 		// Respond to the client on success
 		res.status(200).send('User registered successfully');
@@ -42,14 +38,14 @@ async function controller(req, res) {
 const validators = [
 	body('first_name')
 		.isAlpha('en-US', { ignore: ' ' })
-		.withMessage('Only alphanumerical characters are accepted')
+		.withMessage('Only alphanumerical characters are allowed')
 		.customSanitizer(removeExtraSpaces)
 		.trim()
 		.isLength({ min: 3, max: 50 })
 		.withMessage('Must be between 3 to 50 characters long'),
 	body('last_name')
 		.isAlpha('en-US', { ignore: ' ' })
-		.withMessage('Only alphanumerical characters are accepted')
+		.withMessage('Only alphanumerical characters are allowed')
 		.customSanitizer(removeExtraSpaces)
 		.trim()
 		.isLength({ min: 3, max: 50 })
@@ -67,9 +63,9 @@ const validators = [
 		.withMessage('Must be maximum 50 characters long')
 		.isStrongPassword()
 		.withMessage('Must contain 8 or more characters long and must contain'
-			+ 'at leas one lowercase letter,'
-			+ 'at least one uppercase letter'
-			+ 'at least 1 number'
+			+ 'at least one lowercase letter, '
+			+ 'at least one uppercase letter, '
+			+ 'at least 1 number '
 			+ 'and at least 1 symbol'),
 ];
 
