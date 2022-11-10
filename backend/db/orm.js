@@ -7,7 +7,7 @@ if ((args.mode)?.toLowerCase() === 'development') {
 		storage: 'dev_db.sqlite', // this will create a file with that name
 	});
 } else if((args.mode)?.toLowerCase() === 'testing') {
-	module.exports = new Sequelize('sqlite::memory:'); // this will initialize a SQLite DB in memory
+	module.exports = new Sequelize('sqlite::memory:', {logging: false}); // this will initialize a SQLite DB in memory
 } else {
 	const { DB_NAME, DB_USER, DB_PASSWORD, DB_DIALECT, DB_HOST } = process.env;
 	module.exports = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {

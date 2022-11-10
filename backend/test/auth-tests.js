@@ -1,4 +1,4 @@
-const assert = require('chai').assert;
+const { expect, assert } = require('chai');
 const chai = require('chai');
 const server = require('../app');
 const orm = require('../db/orm');
@@ -6,16 +6,16 @@ const { User } = require('../models/index');
 
 chai.use(require('chai-http'));
 
+const userDataForm = {
+	first_name: 'John',
+	last_name: 'Doe',
+	user_name: 'jdoe64',
+	password: 'LongPa$$word28',
+	email: 'jdoe@test.com'
+};
+
 describe('User registration', () => {
 	let agent;
-
-	const userDataForm = {
-		first_name: 'John',
-		last_name: 'Doe',
-		user_name: 'jdoe64',
-		password: 'LongPa$$word28',
-		email: 'jdoe@test.com'
-	};
 
 	before(async () => {
 		await orm.sync({ force: true }); // reset the DB
@@ -42,7 +42,7 @@ describe('User registration', () => {
 			.type('form')
 			.send(invalidData);
 
-		// THEN an error status code should be received
+		// THEN an error status code should be received (404: bad request)
 		assert.equal(response.status, 400);
 		// THEN at least two errors should be received
 		assert.isAtLeast(response.body.errors.length, 2);
@@ -77,7 +77,80 @@ describe('User registration', () => {
 			.type('form')
 			.send(userDataForm);
 
-		// THEN an error status code should be received
+		// THEN an error status code should be received (409: conflict)
 		assert.equal(response.status, 409);
+	});
+});
+
+
+describe('User login', () => {
+	let agent;
+
+	before(async () => {
+		await orm.sync({ force: true }); // reset the DB
+		agent = await chai.request.agent(server);
+		// Register a user
+		await agent
+			.post('/api/auth/register')
+			.type('form')
+			.send(userDataForm);
+	});
+
+	after(async () => {
+		await agent.close(); // shut down the server
+	});
+
+	it('Login with invalid data', async () => {
+		// GIVEN a set of user data that is already stored in the database
+
+		// WHEN that data is sent to the API endpoint
+		const response = await agent
+			.post('/api/auth/login')
+			.type('form')
+			.send({
+				...userDataForm,
+				email: 'is this even an email?' // invalid email				
+			});
+
+		// THEN an error status code should be received (400: bad request)
+		assert.equal(response.status, 400);
+
+		// THEN the auth cookie is not set
+		expect(response).not.to.have.cookie('concord_auth');
+	});	
+
+	it('Login to an existent account', async () => {
+		// GIVEN a set of user data that is already stored in the database
+
+		// WHEN that data is sent to the API endpoint
+		const response = await agent
+			.post('/api/auth/login')
+			.type('form')
+			.send(userDataForm);
+
+		// THEN the auth cookie is set
+		expect(response).to.have.cookie('concord_auth');
+	});
+
+	it('Login to an inexistent account', async () => {
+		// GIVEN a set of user data that is already stored in the database
+
+		// WHEN that data is sent to the API endpoint
+		const response = await agent
+			.post('/api/auth/login')
+			.type('form')
+			.send({
+				first_name: 'Jane',
+				last_name: 'Roe',
+				user_name: 'jroe32',
+				password: 'LongPa$$word28',
+				email: 'jroe@test.com'
+			});
+
+		// THEN an error status code should be received (404: not found)
+		assert.equal(response.status, 404);
+
+		// THEN the auth cookie is not set
+		expect(response).not.to.have.cookie('concord_auth');
 	});
 });
