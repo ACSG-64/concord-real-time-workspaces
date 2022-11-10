@@ -101,26 +101,28 @@ describe('User login', () => {
 	});
 
 	it('Login with invalid data', async () => {
-		// GIVEN a set of user data that is already stored in the database
+		// GIVEN a set of invalid credentials
+		const invalidData = {
+			...userDataForm,
+			email: 'is this even an email?' // this should be rejected				
+		};
 
 		// WHEN that data is sent to the API endpoint
 		const response = await agent
 			.post('/api/auth/login')
 			.type('form')
-			.send({
-				...userDataForm,
-				email: 'is this even an email?' // invalid email				
-			});
+			.send(invalidData);
 
 		// THEN an error status code should be received (400: bad request)
-		assert.equal(response.status, 400);
-
+		assert.equal(response.status, 400);	
+		// THEN at least an error should be received
+		assert.isAtLeast(response.body.errors.length, 1);
 		// THEN the auth cookie is not set
 		expect(response).not.to.have.cookie('concord_auth');
-	});	
+	});
 
 	it('Login to an existent account', async () => {
-		// GIVEN a set of user data that is already stored in the database
+		// GIVEN credentials of an existent account
 
 		// WHEN that data is sent to the API endpoint
 		const response = await agent
@@ -133,23 +135,23 @@ describe('User login', () => {
 	});
 
 	it('Login to an inexistent account', async () => {
-		// GIVEN a set of user data that is already stored in the database
+		// GIVEN credentials of an inexistent account
+		const inexistentUser = {
+			first_name: 'Jane',
+			last_name: 'Roe',
+			user_name: 'jroe32',
+			password: 'LongPa$$word28',
+			email: 'jroe@test.com'
+		};
 
 		// WHEN that data is sent to the API endpoint
 		const response = await agent
 			.post('/api/auth/login')
 			.type('form')
-			.send({
-				first_name: 'Jane',
-				last_name: 'Roe',
-				user_name: 'jroe32',
-				password: 'LongPa$$word28',
-				email: 'jroe@test.com'
-			});
+			.send(inexistentUser);
 
 		// THEN an error status code should be received (404: not found)
 		assert.equal(response.status, 404);
-
 		// THEN the auth cookie is not set
 		expect(response).not.to.have.cookie('concord_auth');
 	});
