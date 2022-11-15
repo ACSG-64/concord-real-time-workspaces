@@ -1,0 +1,23 @@
+{
+  "name": "concord-real-time-workspaces",
+  "private": true,
+  "version": "1.0.0",
+  "description": "An open source collaboration web app similar to Slack.",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ACSG-64/concord-real-time-workspaces.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ACSG-64/concord-real-time-workspaces/issues"
+  },
+  "homepage": "https://github.com/ACSG-64/concord-real-time-workspaces#readme"
+}
