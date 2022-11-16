@@ -11,10 +11,14 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
-    "rules": {
+    "rules": { 
+        "brace-style": [
+            "error",
+            "1tbs"
+        ],
         "indent": [
             "error",
-            "tab"
+            4
         ],
         "linebreak-style": [
             "error",
