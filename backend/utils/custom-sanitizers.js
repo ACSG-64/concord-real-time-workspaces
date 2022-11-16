@@ -4,9 +4,9 @@
  * @returns {string} The formatted string
  */
 function removeExtraSpaces(str) {
-	return str.replace(/\s\s+/g, ' ');
+    return str.replace(/\s\s+/g, ' ');
 }
 
 module.exports = {
-	removeExtraSpaces
+    removeExtraSpaces
 };

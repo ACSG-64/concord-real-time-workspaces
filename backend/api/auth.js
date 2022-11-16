@@ -8,27 +8,27 @@ const router = express.Router();
 
 /* Limiters */
 const registerLimiter = rateLimit({
-	windowMs: toMilliseconds({ minutes: 5 }),
-	max: args.mode === 'production' ? 2 : 100,
-	message: 'Too many requests, try again later',
-	standardHeaders: true,
+    windowMs: toMilliseconds({ minutes: 5 }),
+    max: args.mode === 'production' ? 2 : 100,
+    message: 'Too many requests, try again later',
+    standardHeaders: true,
 });
 
 const loginLimiter = rateLimit({
-	windowMs: toMilliseconds({ minutes: 5 }),
-	max: args.mode === 'production' ? 5 : 100,
-	message: 'Too many attempts, try again later',
-	standardHeaders: true,
+    windowMs: toMilliseconds({ minutes: 5 }),
+    max: args.mode === 'production' ? 5 : 100,
+    message: 'Too many attempts, try again later',
+    standardHeaders: true,
 });
 
 /* Routes */
 router.post(
-	'/register', registerLimiter,
-	register.validators, register.controller
+    '/register', registerLimiter,
+    register.validators, register.controller
 );
 router.post(
-	'/login', loginLimiter,
-	login.validators, login.controller
+    '/login', loginLimiter,
+    login.validators, login.controller
 );
 
 module.exports = router;

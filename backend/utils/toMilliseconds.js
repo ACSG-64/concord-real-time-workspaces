@@ -8,11 +8,11 @@
  * @returns The input time in milliseconds
  */
 function toMilliseconds({ days, hours, minutes, seconds }) {
-	if (seconds) return seconds * 1000;
-	else if (minutes) return minutes * 60 * 1000;
-	else if (hours) return hours * 60 * 60 * 1000;
-	else if (days) return days * 24 * 60 * 60 * 100;	
-	throw 'Invalid input';
+    if (seconds) return seconds * 1000;
+    else if (minutes) return minutes * 60 * 1000;
+    else if (hours) return hours * 60 * 60 * 1000;
+    else if (days) return days * 24 * 60 * 60 * 100;
+    throw new Error('Invalid input');
 }
 
 module.exports = toMilliseconds;

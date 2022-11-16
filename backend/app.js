@@ -26,13 +26,13 @@ app.use('/api/auth', authEndpoint);
 
 /* Server events */
 server.on('listening', () => {
-	const mode = args.mode ?? 'production';
-	console.warn(`Project running in ${mode.toUpperCase()} mode`);
-	const PORT = process.env.PORT || 8080;
-	console.info(`Server listening on port ${PORT}`);
+    const mode = args.mode ?? 'production';
+    console.warn(`Project running in ${mode.toUpperCase()} mode`);
+    const PORT = process.env.PORT || 8080;
+    console.info(`Server listening on port ${PORT}`);
 });
 server.on('close', () => {
-	console.info('The server is stopping...');
+    console.info('The server is stopping...');
 });
 
 /**
