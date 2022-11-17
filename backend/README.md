@@ -60,9 +60,9 @@ Contributions are open for code development and maintenance. You are also welcom
 Module handling will be done through CommonJS and there is no expected transition to ECMAScript modules in the near future.
 
 ### Directories
-*   **api**: the different routes and middlewares of the application are defined and the models are added to handle the requests.
+*   **api**: the different routes and middlewares of the application are defined and the controllers are added to handle the requests.
 
-*   **models**: it is the representation of the information with which the system operates, therefore it manages all accesses to such information, both queries and updates. The requests for access or manipulation of information reach the 'model' through the 'controller'. Here the models are mainly defined using Sequelize ORM.
+*   **models**: it is the representation of the information with which the system operates, therefore it manages all accesses to such information, both queries and updates. The requests for access or manipulation of the data reach the 'model' through the 'controller'. Here the models are mainly defined using Sequelize ORM.
 
 *   **controllers**: this is where the business logic is implemented. In this application the response of the controller does not render a view, instead it responds with information (JSON, status codes, plain text, etc.) to be used by the client.
 
