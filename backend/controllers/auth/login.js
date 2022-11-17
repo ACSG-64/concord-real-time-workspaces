@@ -1,5 +1,6 @@
 const args = require('../../utils/args');
 const { body } = require('express-validator');
+const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const { User } = require('../../models/index');
@@ -8,15 +9,21 @@ const toMilliseconds = require('../../utils/toMilliseconds');
 const COOKIE_NAME = 'concord_auth';
 async function controller(req, res) {
     // Get the needed fields from the body of the request
-    const { email, password: raw_pswd } = req.body;
+    const { user_id, password: raw_pswd } = req.body;
 
     /* Query the DB */
     let record;
     try {
-        // Search for the user in the DB. We only need the id and the password
+        // Search for the user in the DB. 
         record = await User.findOne({
-            attributes: ['id', 'password'],
-            where: { email }
+            attributes: ['id', 'password'], // we only need the id and the password
+            where: {
+                // search by user_name OR email
+                [Op.or]: [
+                    { user_name: user_id },
+                    { email: user_id }
+                ]
+            }
         });
     } catch (e) {
         return res.status(500).send('An error has ocurred, please try again');
@@ -61,10 +68,9 @@ async function controller(req, res) {
 }
 
 const validators = [
-    body('email')
-        .trim().isEmail()
-        .withMessage('Invalid email')
-        .normalizeEmail(),
+    body('user_id')
+        .trim().isLength({ min: 3, max: 50 })
+        .withMessage('Must be between 3 and 50 characters long'),
     body('password')
         .isLength({ max: 50 })
         .withMessage('Must be maximum 50 characters long'),

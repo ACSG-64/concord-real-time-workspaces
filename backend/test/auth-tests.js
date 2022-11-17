@@ -100,35 +100,35 @@ describe('User login', () => {
         await agent.close(); // shut down the server
     });
 
-    it('Login with invalid data', async () => {
-        // GIVEN a set of invalid credentials
-        const invalidData = {
+    it('Login to an existent account using EMAIL', async () => {
+        // GIVEN credentials of an existent account
+        const userDataLoginForm = {
             ...userDataForm,
-            email: 'is this even an email?' // this should be rejected				
+            user_id: userDataForm.email,
         };
 
         // WHEN that data is sent to the API endpoint
         const response = await agent
             .post('/api/auth/login')
             .type('form')
-            .send(invalidData);
+            .send(userDataLoginForm);
 
-        // THEN an error status code should be received (400: bad request)
-        assert.equal(response.status, 400);
-        // THEN at least an error should be received
-        assert.isAtLeast(response.body.errors.length, 1);
-        // THEN the auth cookie is not set
-        expect(response).not.to.have.cookie('concord_auth');
+        // THEN the auth cookie is set
+        expect(response).to.have.cookie('concord_auth');
     });
 
-    it('Login to an existent account', async () => {
+    it('Login to an existent account using USER NAME', async () => {
         // GIVEN credentials of an existent account
+        const userDataLoginForm = {
+            ...userDataForm,
+            user_id: userDataForm.user_name,
+        };
 
         // WHEN that data is sent to the API endpoint
         const response = await agent
             .post('/api/auth/login')
             .type('form')
-            .send(userDataForm);
+            .send(userDataLoginForm);
 
         // THEN the auth cookie is set
         expect(response).to.have.cookie('concord_auth');
@@ -141,7 +141,8 @@ describe('User login', () => {
             last_name: 'Roe',
             user_name: 'jroe32',
             password: 'LongPa$$word28',
-            email: 'jroe@test.com'
+            email: 'jroe@test.com',
+            user_id: 'janeRoe33'
         };
 
         // WHEN that data is sent to the API endpoint
