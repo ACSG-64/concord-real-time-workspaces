@@ -13,6 +13,7 @@ npm install --production
 ## Before running the project
 Create a .env file with the following
 ```
+NODE_ENV=
 PORT=
 JWT_SECRET=
 DB_DIALECT=
@@ -23,6 +24,7 @@ DB_HOST=
 ```
 
 Variables:
+*   `NODE_ENV`: environment of execution of the server. 
 *   `PORT`: port where the server is going to listen.
 *   `JWT_SECRET`: secret to sign the JWTs. It can be any string, but in production it must be a secure string and extremely difficult to guess.
 *   `DB_DIALECT`: `mysql` | `postgres` | `sqlite` | `mariadb` | `mssql` | `db2` | `snowflake` | `oracle`.
@@ -30,9 +32,9 @@ Variables:
 *   `DB_PASSWORD`: DB user password.
 *   `DB_HOST`: host of the DB.
 
-In development you just need to set the `PORT` and `JWT_SECRET` variables.
+In **development** you just need to set the `PORT` and `JWT_SECRET` variables.
 
-In production you need to set all variables accordingly.
+In **production** you need to set the `NODE_ENV` variable to `production` and the rest of the variables accordingly.
 
 
 ## Running the project
