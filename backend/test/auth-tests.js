@@ -86,7 +86,7 @@ describe('User registration', () => {
 describe('User login', () => {
     let agent;
 
-    before(async () => {
+    beforeEach(async () => {
         await orm.sync({ force: true }); // reset the DB
         agent = await chai.request.agent(server);
         // Register a user
@@ -96,7 +96,7 @@ describe('User login', () => {
             .send(userDataForm);
     });
 
-    after(async () => {
+    afterEach(async () => {
         await agent.close(); // shut down the server
     });
 

@@ -1,18 +1,9 @@
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 const argon2 = require('argon2');
 const { User } = require('../../models/index');
 const { removeExtraSpaces } = require('../../utils/custom-sanitizers');
 
 async function controller(req, res) {
-    // Check if the data is valid (from the middleware)
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            // Only send the error msg and the param where the error was found to avoid expose more info
-            errors: errors.array().map(({ msg, param }) => { return { msg, param }; })
-        });
-    }
-
     // Get the needed fields from the body of the request
     const { first_name, last_name, user_name, email, password: raw_pswd } = req.body;
 

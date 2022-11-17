@@ -1,5 +1,5 @@
 const args = require('../../utils/args');
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const { User } = require('../../models/index');
@@ -7,18 +7,6 @@ const toMilliseconds = require('../../utils/toMilliseconds');
 
 const COOKIE_NAME = 'concord_auth';
 async function controller(req, res) {
-    // Check if the data is valid (from the middleware)
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res
-            .status(400)
-            .clearCookie(COOKIE_NAME) // remove the cookie from the client if any
-            .json({
-                // Only send the error msg and the param where the error was found to avoid expose more info
-                errors: errors.array().map(({ msg, param }) => { return { msg, param }; })
-            });
-    }
-
     // Get the needed fields from the body of the request
     const { email, password: raw_pswd } = req.body;
 
@@ -31,10 +19,7 @@ async function controller(req, res) {
             where: { email }
         });
     } catch (e) {
-        return res
-            .status(500)
-            .clearCookie(COOKIE_NAME) // remove the cookie from the client if any
-            .send('An error has ocurred, please try again');
+        return res.status(500).send('An error has ocurred, please try again');
     }
 
     /* Data verification */
@@ -44,18 +29,18 @@ async function controller(req, res) {
     // If the provided password doesn't match with the hashed password in the DB, return
     if (await !argon2.verify(record.password, `${raw_pswd}`)) return res.status(404).end();
 
-	
+
     /* Cookie setup */
     // Set the expiration time in milliseconds for the cookie and the JWT
     const expMillis = toMilliseconds({ hours: 3 });
-	
+
     // Create a signed JWT
     const session_jwt = await jwt.sign(
         { uuid: record.id }, // payload, we are using only the ID of the user
         process.env.JWT_SECRET, // signature
         { expiresIn: `${expMillis}` }
     );
-	
+
     // Cookie settings
     const cookieSettings = {
         httpOnly: true,
