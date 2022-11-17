@@ -2,6 +2,7 @@ const args = require('../utils/args');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const toMilliseconds = require('../utils/toMilliseconds');
+const { validationErrorHandler } = require('../controllers/middleware/index');
 const { register, login } = require('../controllers/auth/index');
 
 const router = express.Router();
@@ -24,11 +25,14 @@ const loginLimiter = rateLimit({
 /* Routes */
 router.post(
     '/register', registerLimiter,
-    register.validators, register.controller
+    register.validators, validationErrorHandler,
+    register.controller
 );
+
 router.post(
     '/login', loginLimiter,
-    login.validators, login.controller
+    login.validators, validationErrorHandler,
+    login.controller
 );
 
 module.exports = router;
