@@ -8,7 +8,7 @@ const Channel = orm.define('channels', {
     defaultValue: DataTypes.UUIDV4,
   },
   name: {
-    type: Dataypes.STRING(20),
+    type: DataTypes.STRING(20),
     allowNull: false,
   },
   description: {
