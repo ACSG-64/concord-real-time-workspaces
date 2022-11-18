@@ -9,5 +9,5 @@ module.exports = {
     Message,
     Channel,
     Workspace,
-    membership,
+    Membership,
 };
