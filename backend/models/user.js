@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const orm = require('../db/orm');
 
-const User = orm.define('users', {
+const User = orm.define('user', {
     id: {
         primaryKey: true,
         type: DataTypes.UUID,
