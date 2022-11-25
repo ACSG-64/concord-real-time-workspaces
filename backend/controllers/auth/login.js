@@ -44,7 +44,7 @@ async function controller(req, res) {
     // Create a signed JWT
     const session_jwt = await jwt.sign(
         { uuid: record.id }, // payload, we are using only the ID of the user
-        process.env.JWT_SECRET, // signature
+        process.env.JWT_SECRET || "83j28f2392if", // signature
         { expiresIn: `${expMillis}` }
     );
 

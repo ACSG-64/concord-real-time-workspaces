@@ -3,7 +3,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const toMilliseconds = require('../utils/toMilliseconds');
 const { validationErrorHandler } = require('../controllers/middleware/index');
-const { register, login } = require('../controllers/auth/index');
+const { register, login, updateInfo } = require('../controllers/auth/index');
 
 const router = express.Router();
 
@@ -33,6 +33,11 @@ router.post(
     '/login', loginLimiter,
     login.validators, validationErrorHandler,
     login.controller
+);
+
+router.patch(
+    '/update/:userId', updateInfo.validators, validationErrorHandler,
+    updateInfo.controller
 );
 
 module.exports = router;
