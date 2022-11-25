@@ -34,8 +34,8 @@ async function controller(req, res) {
     if (!record) return res.status(404).send('Invalid credentials');
 
     // If the provided password doesn't match with the hashed password in the DB, return
-    const matchPassword = await argon2.verify(record.password, `${raw_pswd}`);
-    if (!matchPassword) return res.status(404).send('Invalid credentials');
+    if (!(await argon2.verify(record.password, `${raw_pswd}`)))
+        return res.status(404).send('Invalid credentials');
 
     /* Cookie setup */
     // Set the expiration time in milliseconds for the cookie and the JWT
