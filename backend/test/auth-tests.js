@@ -84,6 +84,7 @@ describe('User registration', () => {
 
 
 describe('User login', () => {
+
     let agent;
 
     beforeEach(async () => {
@@ -103,8 +104,8 @@ describe('User login', () => {
     it('Login to an existent account using EMAIL', async () => {
         // GIVEN credentials of an existent account
         const userDataLoginForm = {
-            ...userDataForm,
             user_id: userDataForm.email,
+            password: userDataForm.password,
         };
 
         // WHEN that data is sent to the API endpoint
@@ -120,8 +121,8 @@ describe('User login', () => {
     it('Login to an existent account using USER NAME', async () => {
         // GIVEN credentials of an existent account
         const userDataLoginForm = {
-            ...userDataForm,
             user_id: userDataForm.user_name,
+            password: userDataForm.password,
         };
 
         // WHEN that data is sent to the API endpoint
@@ -137,12 +138,8 @@ describe('User login', () => {
     it('Login to an inexistent account', async () => {
         // GIVEN credentials of an inexistent account
         const inexistentUser = {
-            first_name: 'Jane',
-            last_name: 'Roe',
-            user_name: 'jroe32',
+            user_id: 'janeRoe33',
             password: 'LongPa$$word28',
-            email: 'jroe@test.com',
-            user_id: 'janeRoe33'
         };
 
         // WHEN that data is sent to the API endpoint
@@ -150,6 +147,25 @@ describe('User login', () => {
             .post('/api/auth/login')
             .type('form')
             .send(inexistentUser);
+
+        // THEN an error status code should be received (404: not found)
+        assert.equal(response.status, 404);
+        // THEN the auth cookie is not set
+        expect(response).not.to.have.cookie('concord_auth');
+    });
+
+    it('Login to an existent account but using an incorrect password', async () => {
+        // GIVEN credentials of an existent account
+        const userDataLoginForm = {
+            user_id: userDataForm.user_name,            
+            password: 'dummy password',
+        };
+
+        // WHEN that data is sent to the API endpoint
+        const response = await agent
+            .post('/api/auth/login')
+            .type('form')
+            .send(userDataLoginForm);
 
         // THEN an error status code should be received (404: not found)
         assert.equal(response.status, 404);
