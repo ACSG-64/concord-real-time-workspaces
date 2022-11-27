@@ -54,7 +54,7 @@ async function controller(req, res) {
         sameSite: false,
         maxAge: expMillis,
     };
-    if (args.mode === 'production') {
+    if (process.env.NODE_ENV === 'production' || args.mode === 'production') {
         cookieSettings.secure = true;
         cookieSettings.sameSite = true;
     }
