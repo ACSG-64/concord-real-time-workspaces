@@ -9,8 +9,6 @@ const { updateInfo, updatePassword } = require('../controllers/account/index');
 const router = express.Router();
 
 /* Middleware */
-// Protect the route from unauthorized users
-router.use(clientAuthorization);
 // Limiter
 router.use(rateLimit({
     windowMs: args.mode === 'production'
@@ -20,6 +18,8 @@ router.use(rateLimit({
     message: 'Too many requests, try again later',
     standardHeaders: true,
 }));
+// Protect the route from unauthorized users
+router.use(clientAuthorization);
 
 /* Routes */
 router.put(
