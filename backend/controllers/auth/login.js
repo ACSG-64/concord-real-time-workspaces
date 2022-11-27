@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const { User } = require('../../models/index');
-const toMilliseconds = require('../../utils/toMilliseconds');
+const toMilliseconds = require('../../utils/to-milliseconds');
 
 const COOKIE_NAME = 'concord_auth';
 async function controller(req, res) {

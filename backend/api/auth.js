@@ -1,7 +1,7 @@
 const args = require('../utils/args');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const toMilliseconds = require('../utils/toMilliseconds');
+const toMilliseconds = require('../utils/to-milliseconds');
 const { validationErrorHandler } = require('../controllers/middleware/index');
 const { register, login } = require('../controllers/auth/index');
 
