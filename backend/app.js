@@ -3,6 +3,7 @@ const args = require('./utils/args');
 const express = require('express');
 const { createServer } = require('http');
 const path = require('path');
+
 const { authEndpoint, accountEndpoint } = require('./api/index');
 
 /* Configure the server */
@@ -26,13 +27,17 @@ app.use('/api/account', accountEndpoint);
 
 /* Server events */
 server.on('listening', () => {
-    const mode = args.mode ?? 'production';
-    console.warn(`Project running in ${mode.toUpperCase()} mode`);
-    const PORT = process.env.PORT || 8080;
-    console.info(`Server listening on port ${PORT}`);
+    if (!args.silent) {
+        const mode = args.mode ?? 'production';
+        console.warn(`Project running in ${mode.toUpperCase()} mode`);
+        const PORT = process.env.PORT || 8080;
+        console.info(`Server listening on port ${PORT}`);
+    }
 });
 server.on('close', () => {
-    console.info('The server is stopping...');
+    if (!args.silent) {
+        console.info('The server is stopping...');
+    }
 });
 
 /**
