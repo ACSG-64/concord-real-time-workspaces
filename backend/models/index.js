@@ -5,10 +5,10 @@ const Workspace = require('./workspace');
 const Membership = require('./membership');
 const { DataTypes } = require('sequelize');
 
-// CHANGING DEPENDING ON WHAT ANDRES TELLS ME.
+
 User.hasMany(Message, {
     foreignKey: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.UUID,
     },
     onDelete: 'CASCADE',
