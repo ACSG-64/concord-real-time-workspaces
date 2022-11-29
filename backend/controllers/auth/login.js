@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const { User } = require('../../models/index');
-const toMilliseconds = require('../../utils/toMilliseconds');
+const toMilliseconds = require('../../utils/to-milliseconds');
 
 const COOKIE_NAME = 'concord_auth';
 async function controller(req, res) {
@@ -34,8 +34,8 @@ async function controller(req, res) {
     if (!record) return res.status(404).send('Invalid credentials');
 
     // If the provided password doesn't match with the hashed password in the DB, return
-    if (await !argon2.verify(record.password, `${raw_pswd}`)) return res.status(404).end();
-
+    if (!(await argon2.verify(record.password, `${raw_pswd}`)))
+        return res.status(404).send('Invalid credentials');
 
     /* Cookie setup */
     // Set the expiration time in milliseconds for the cookie and the JWT
@@ -54,7 +54,7 @@ async function controller(req, res) {
         sameSite: false,
         maxAge: expMillis,
     };
-    if (args.mode === 'production') {
+    if (process.env.NODE_ENV === 'production' || args.mode === 'production') {
         cookieSettings.secure = true;
         cookieSettings.sameSite = true;
     }

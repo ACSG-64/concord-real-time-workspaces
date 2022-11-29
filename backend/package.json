@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon server.js --mode=development",
     "start": "pm2 app.js --mode=production",
-    "test": "mocha --mode=testing --exit"
+    "test": "mocha --mode=testing --silent --exit"
   },
   "dependencies": {
     "argon2": "^0.30.1",
