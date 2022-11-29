@@ -26,6 +26,8 @@ const Workspace = orm.define('workspace', {
         default: false,
         allowNull: false,
     },
+}, {
+    updatedAt: false,
 });
 
 module.exports = Workspace;

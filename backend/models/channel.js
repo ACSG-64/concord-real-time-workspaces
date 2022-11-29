@@ -14,6 +14,8 @@ const Channel = orm.define('channel', {
     description: {
         type: DataTypes.STRING(200),
     },
+}, {
+    updatedAt: false,
 });
 
 module.exports = Channel;

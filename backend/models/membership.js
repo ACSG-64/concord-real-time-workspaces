@@ -11,6 +11,9 @@ const Membership = orm.define('membership', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+
+}, {
+    updatedAt: false,
 });
 
 module.exports = Membership;

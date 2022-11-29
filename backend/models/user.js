@@ -30,6 +30,8 @@ const User = orm.define('user', {
         allowNull: false,
     },
     picture: DataTypes.STRING,
+}, {
+    updatedAt: false,
 });
 
 module.exports = User;
