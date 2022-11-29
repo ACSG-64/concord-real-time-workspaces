@@ -15,6 +15,17 @@ const Workspace = orm.define('workspace', {
         type: DataTypes.STRING,
         isUrl: true,
     },
+    invitationId: {
+        type: DataTypes.UUID,
+        default: DataTypes.UUIDV4,
+        allowNull: false,
+        unique: true,
+    },
+    acceptingNewcomers: {
+        type: DataTypes.BOOLEAN,
+        default: false,
+        allowNull: false,
+    },
 });
 
 module.exports = Workspace;
