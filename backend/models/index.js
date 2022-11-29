@@ -3,27 +3,26 @@ const Message = require('./message');
 const Channel = require('./channel');
 const Workspace = require('./workspace');
 const Membership = require('./membership');
-const { DataTypes } = require('sequelize');
 
 
+//Set Associations
 User.hasMany(Message, {
-    foreignKey: {
-        allowNull: true,
-        type: DataTypes.UUID,
-    },
     onDelete: 'CASCADE',
 });
 Message.belongsTo(User);
 
-User.hasMany(Membership, {
+User.belongsToMany(Workspace, {
+    through: Membership,
     onDelete: 'CASCADE'
 });
-Membership.belongsTo(User);
 
-Workspace.hasMany(Membership, {
+User.hasMany(Message);
+Message.belongsTo(User);
+
+Workspace.belongsToMany(User, {
+    through: Membership,
     onDelete: 'CASCADE'
 });
-Membership.belongsTo(Workspace);
 
 Workspace.hasMany(Channel, {
     onDelete: 'CASCADE'
@@ -34,6 +33,7 @@ Channel.hasMany(Message, {
     onDelete: 'CASCADE'
 });
 Message.belongsTo(Channel);
+
 
 Message.hasMany(Message, {
     onDelete: 'CASCADE'
