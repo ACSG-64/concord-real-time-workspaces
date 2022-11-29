@@ -6,22 +6,15 @@ const Membership = require('./membership');
 
 
 //Set Associations
-User.hasMany(Message, {
-    onDelete: 'CASCADE',
-});
-Message.belongsTo(User);
-
-User.belongsToMany(Workspace, {
-    through: Membership,
-    onDelete: 'CASCADE'
-});
-
 User.hasMany(Message);
 Message.belongsTo(User);
 
+User.belongsToMany(Workspace, {
+    through: Membership
+});
+
 Workspace.belongsToMany(User, {
-    through: Membership,
-    onDelete: 'CASCADE'
+    through: Membership
 });
 
 Workspace.hasMany(Channel, {
@@ -33,7 +26,6 @@ Channel.hasMany(Message, {
     onDelete: 'CASCADE'
 });
 Message.belongsTo(Channel);
-
 
 Message.hasMany(Message, {
     onDelete: 'CASCADE'
