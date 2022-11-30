@@ -23,30 +23,40 @@ async function controller(req,res){
     } catch (e) {
         return res.status(500).send('An error has occurred, please try again');
     }
-
+    let role;
     try {
         //Grab the role of the user
-        const {role} = await Membership.findOne({
+        role = await Membership.findOne({
             where: {
                 userId: uuid,
                 workspaceId: workspaceId,
             },
             attributes: ['role'],
         });
-
-        /*Find out if the user is the owner of the workspace
-        If they are the owner, let them delete the workspace */
-        if(role == 'owner'){
-            Workspace.destroy({
-                where: {
-                    id: workspaceId
-                }
-            });
-        }
-        res.status(200).send('Workspace Sucessfully Deleted.');
     } catch (e) {
-        res.status(401).send('You are not the owner of this Workspace.');
+        return res.status(500).send('An error has occurred, please try again');
     }   
+    
+    try {
+        //if the role isn't null
+        if (role != null){
+            //if the role of the user is owner, delete.
+            if(role.role == 'owner'){
+                await Workspace.destroy({
+                    where: {
+                        id: workspaceId
+                    }
+                });
+            }else {
+                return res.status(401).send('You are not the owner of this Workspace.');
+            }
+        }else {
+            return res.status(401).send('You are not the owner of this Workspace.');
+        }
+        return res.status(200).send('Workspace Sucessfully deleted.');
+    } catch (error) {
+        return res.status(500).send('An error has occurred, please try again'); 
+    }
 }
 
 const validators = [];
