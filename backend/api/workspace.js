@@ -4,16 +4,14 @@ const args = require('../utils/args');
 const toMilliseconds = require('../utils/to-milliseconds');
 const { clientAuthorization } = require('../controllers/middleware/index');
 const { validationErrorHandler } = require('../controllers/middleware/index');
-const { updateInfo, updatePassword } = require('../controllers/account/index');
+const {create, remove} = require('../controllers/workspace/index');
 
 const router = express.Router();
 
 /* Limiters */
 router.use(rateLimit({
-    windowMs: args.mode === 'production'
-        ? toMilliseconds({ minutes: 5 })
-        : toMilliseconds({ minutes: 10 }), 
-    max: args.mode === 'production' ? 5 : 100, 
+    windowMs: toMilliseconds({ minutes: 10 }),
+    max: args.mode === 'production' ? 5 : 100,
     message: 'Too many requests, try again later',
     standardHeaders: true,
 }));
@@ -21,16 +19,15 @@ router.use(rateLimit({
 router.use(clientAuthorization);
 
 /* Routes */
-router.put(
-    '/update',
-    updateInfo.validators, validationErrorHandler,
-    updateInfo.controller
+router.post(
+    '/create',
+    create.validators, validationErrorHandler,
+    create.controller
 );
-
-router.put(
-    '/update/password',
-    updatePassword.validators, validationErrorHandler,
-    updatePassword.controller
+router.delete(
+    '/delete/:workspaceId',
+    remove.validators, validationErrorHandler,
+    remove.controller
 );
 
 module.exports = router;
