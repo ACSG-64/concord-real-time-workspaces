@@ -8,10 +8,11 @@ const Membership = orm.define('membership', {
         defaultValue: DataTypes.UUIDV4,
     },
     role: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
+        values: ['owner', 'member'],
+        defaultValue: 'member',
         allowNull: false,
     },
-
 }, {
     updatedAt: false,
 });
