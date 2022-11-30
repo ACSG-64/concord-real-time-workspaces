@@ -1,9 +1,9 @@
 const { body } = require('express-validator');
 const jwt = require('jsonwebtoken');
-const { Membership, Workspace, Channel} = require('../../models/index');
+const { Membership, Workspace, Channel } = require('../../models/index');
 const { removeExtraSpaces } = require('../../utils/custom-sanitizers');
 
-async function controller(req,res){
+async function controller(req, res) {
     //get the needed fields from the body
     const { name } = req.body;
 
@@ -13,9 +13,7 @@ async function controller(req,res){
     let workspace;
     try {
         //Create workspace
-        workspace = await Workspace.create({
-            name,
-        });
+        workspace = await Workspace.create({ name });
         //Add the owner role to the user of the workspace
         await Membership.create({
             role: 'owner',
@@ -24,22 +22,23 @@ async function controller(req,res){
         });
     } catch (e) {
         if (e?.name === 'SequelizeUniqueConstraintError') {
-            res.status(409).send('A Workspace with that name already exists');
+            return res.status(409).send('A Workspace with that name already exists');
         } else {
-            res.status(500).send('Unexpected error, please try again');
+            return res.status(500).send('Unexpected error, please try again');
         }
     }
+
     try {
         //Create a channel named General
         await Channel.create({
             name: 'general',
-            description: 'First channel created.',
+            description: 'Main discussion flow',
             workspaceId: workspace.id,
         });
     } catch (e) {
-        res.status(500).send('Unexpected error, please try again');
+        return res.status(500).send('Unexpected error, please try again');
     }
-    res.status(200).send('Sucessfully created Workspace');
+    res.status(200).send('Successfully created Workspace');
 }
 
 const validators = [
