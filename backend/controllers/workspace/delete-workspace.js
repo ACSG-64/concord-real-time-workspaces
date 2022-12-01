@@ -20,7 +20,7 @@ async function controller(req, res) {
             return res.status(403).send('Incorrect password');
         }
     } catch (e) {
-        return res.status(501).send('An error has occurred, please try again');
+        return res.status(500).send('An error has occurred, please try again');
     }
     let role;
     try {
@@ -30,8 +30,7 @@ async function controller(req, res) {
             attributes: ['role'],
         }));
     } catch (e) {
-        console.log(e);
-        // return res.status(502).send('An error has occurred, please try again');
+        return res.status(500).send('An error has occurred, please try again');
     }
 
     try {
@@ -42,7 +41,7 @@ async function controller(req, res) {
             return res.status(401).send('You are not the owner of this Workspace.');
         }
     } catch (e) {
-        return res.status(503).send('An error has occurred, please try again');
+        return res.status(500).send('An error has occurred, please try again');
     }
 
     res.status(200).send('Workspace Successfully deleted.');
