@@ -1,4 +1,4 @@
-// const { body } = require('express-validator');
+const { body } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const { User, Membership, Workspace } = require('../../models/index');
@@ -47,7 +47,11 @@ async function controller(req, res) {
     res.status(200).send('Workspace Successfully deleted.');
 }
 
-const validators = [];
+const validators = [
+    body('password')
+        .isLength({ max: 50 })
+        .withMessage('Must be maximum 50 characters long')
+];
 
 module.exports = {
     validators,

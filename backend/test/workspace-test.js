@@ -103,6 +103,7 @@ describe('Create and delete a workspace', () => {
         //THEN workspace is not created
         const workspace = await Workspace.findOne();
         assert.notEqual(details.name, workspace.name);
+        
         // and a HTTP error code should be received (401: Unauthorized)
         assert.equal(response.status, 401);
     });
@@ -145,6 +146,17 @@ describe('Create and delete a workspace', () => {
 
         // THEN a HTTP error code should be received (401: Unauthorized)
         assert.equal(response.status, 401);
+
+        //AND workspace, channel and membership are not deleted
+        const workspace = await Workspace.findOne();
+        const channel = await Channel.findOne();
+        const membership = await Membership.findOne();
+
+        assert.notEqual(null, workspace);
+        assert.notEqual(null, channel);
+        assert.notEqual(null, membership);
+
+        
     });
 
     it('Delete a Workspace with wrong password', async () => {
@@ -160,6 +172,39 @@ describe('Create and delete a workspace', () => {
 
         // THEN a HTTP error code should be received (403: Forbidden)
         assert.equal(response.status, 403);
+
+        //AND workspace, channel and membership are not deleted
+        const workspace = await Workspace.findOne();
+        const channel = await Channel.findOne();
+        const membership = await Membership.findOne();
+
+        assert.notEqual(null, workspace);
+        assert.notEqual(null, channel);
+        assert.notEqual(null, membership);
+    });
+
+    it('Delete a Workspace with a password that is too long', async () => {
+        //GIVEN set of invalid data
+        const details = {
+            password: '3j8d283j328jd9j83j982j939283jd98j3d928j9829jd8d9j9823j8923j9398dj983d3f239jf39j932823f32f2089uf23'
+        };
+        //WHEN this data is sent to the server
+        const response = await agent
+            .delete(`/api/workspace/delete/${workspaceId}`)
+            .type('form')
+            .send(details);
+        
+        //THEN a HTTP error code should be recieved (400: Bad Request)
+        assert.equal(response.status, 400);
+
+        //AND workspace, channel and membership are not deleted
+        const workspace = await Workspace.findOne();
+        const channel = await Channel.findOne();
+        const membership = await Membership.findOne();
+
+        assert.notEqual(null, workspace);
+        assert.notEqual(null, channel);
+        assert.notEqual(null, membership);
     });
 
 });
