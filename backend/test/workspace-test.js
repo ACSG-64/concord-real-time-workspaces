@@ -26,8 +26,7 @@ describe('Create and delete a workspace', () => {
     beforeEach(async () => {
         /* Start the server */
         await orm.sync({ force: true }); // reset the DB
-        agent = await chai.request.agent(server);
-
+        agent = chai.request.agent(server);
         // Register a user
         await agent
             .post('/api/auth/register')
