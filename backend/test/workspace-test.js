@@ -19,11 +19,11 @@ const workspaceDataForm = {
     password: userDataForm.password
 };
 
-//Global workspace ID
-let workspaceId;
 
 describe('Create and delete a workspace', () => {
     let agent;
+    let workspaceId;
+
     beforeEach(async () => {
         /* Start the server */
         await orm.sync({ force: true }); // reset the DB
