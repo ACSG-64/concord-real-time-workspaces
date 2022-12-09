@@ -17,13 +17,13 @@ const Workspace = orm.define('workspace', {
     },
     invitationId: {
         type: DataTypes.UUID,
-        default: DataTypes.UUIDV4,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         unique: true,
     },
     acceptingNewcomers: {
         type: DataTypes.BOOLEAN,
-        default: false,
+        defaultValue: false,
         allowNull: false,
     },
 }, {
