@@ -4,7 +4,7 @@ const express = require('express');
 const { createServer } = require('http');
 const path = require('path');
 
-const { authEndpoint, accountEndpoint } = require('./api/index');
+const { authEndpoint, accountEndpoint, workspaceEndpoint } = require('./api/index');
 
 /* Configure the server */
 const app = express();
@@ -24,6 +24,7 @@ app.use(require('cookie-parser')());
 /* Set the API endpoints */
 app.use('/api/auth', authEndpoint);
 app.use('/api/account', accountEndpoint);
+app.use('/api/workspace', workspaceEndpoint);
 
 /* Server events */
 server.on('listening', () => {

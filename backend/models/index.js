@@ -4,36 +4,35 @@ const Channel = require('./channel');
 const Workspace = require('./workspace');
 const Membership = require('./membership');
 
-
-//ASSOCIATIONS
+/* Relationships */
 
 //User-Message
 User.hasMany(Message);
 Message.belongsTo(User);
 
-//User-Workspace
+// User-Workspace
 User.belongsToMany(Workspace, {
     through: Membership
 });
 
-//Workspace-User
+// Workspace-User
 Workspace.belongsToMany(User, {
     through: Membership
 });
 
-//Workspace-Channel
+// Workspace-Channel
 Workspace.hasMany(Channel, {
     onDelete: 'CASCADE'
 });
 Channel.belongsTo(Workspace);
 
-//Channel-Message
+// Channel-Message
 Channel.hasMany(Message, {
     onDelete: 'CASCADE'
 });
 Message.belongsTo(Channel);
 
-//Message-Message
+// Message-Message (reply)
 Message.hasMany(Message, {
     onDelete: 'CASCADE',
     foreignKey: 'replyToMsgId'

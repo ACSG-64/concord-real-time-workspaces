@@ -11,7 +11,6 @@ const Message = orm.define('message', {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    timestamps: true,
 });
 
 module.exports = Message;
