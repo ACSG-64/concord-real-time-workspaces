@@ -24,7 +24,7 @@ app.use(require('cookie-parser')());
 /* Set the API endpoints */
 app.use('/api/auth', authEndpoint);
 app.use('/api/account', accountEndpoint);
-app.use('/api/workspace', workspaceEndpoint);
+app.use('/api/workspace/', workspaceEndpoint);
 
 /* Server events */
 server.on('listening', () => {
