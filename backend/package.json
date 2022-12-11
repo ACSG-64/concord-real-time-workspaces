@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon server.js --mode=development",
     "start": "pm2 app.js --mode=production",
-    "test": "mocha --mode=testing --silent --exit"
+    "test": "mocha --mode=testing --silent --recursive --exit"
   },
   "dependencies": {
     "argon2": "^0.30.1",
@@ -22,6 +22,7 @@
     "pm2": "^5.2.2",
     "sequelize": "^6.25.3",
     "socket.io": "^4.5.3",
+    "uuid": "^9.0.0",
     "yargs": "^17.6.0"
   },
   "devDependencies": {
