@@ -1,7 +1,7 @@
 const { body } = require('express-validator');
 const jwt = require('jsonwebtoken');
-const { Membership, Workspace, Channel } = require('../../models/index');
-const { removeExtraSpaces } = require('../../utils/custom-sanitizers');
+const { Membership, Workspace, Channel } = require('../../../models/index');
+const { removeExtraSpaces } = require('../../../utils/custom-sanitizers');
 
 async function controller(req, res) {
     //get the needed fields from the body
