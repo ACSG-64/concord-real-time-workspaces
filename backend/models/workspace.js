@@ -20,6 +20,7 @@ const Workspace = orm.define('workspace', {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         unique: true,
+        validate: { isUUID: 4 },
     },
     acceptingNewcomers: {
         type: DataTypes.BOOLEAN,
